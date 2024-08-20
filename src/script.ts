@@ -4,7 +4,7 @@ const code = params.get("code");
 
 // Vercel vs Localhost
 // const redirect_uri = "http://localhost:5173/callback";
-const redirect_uri = "https://cat-spotify-app.vercel.app/callback?";
+const redirect_uri = "https://cat-spotify-app.vercel.app/callback";
 
 async function doThings() {
     if (!code) {
