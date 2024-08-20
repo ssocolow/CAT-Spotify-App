@@ -2,17 +2,19 @@ const clientId = "41fe19ab8adb41b587527634a55d09e0";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
-if (!code) {
-    redirectToAuthCodeFlow(clientId);
-} else {
-    const accessToken = await getAccessToken(clientId, code);
-    const profile = await fetchProfile(accessToken);
-    console.log(profile);
-    //populateUI(profile);
-    let link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css';
-    document.head.appendChild(link);
+async function doThings() {
+    if (!code) {
+        redirectToAuthCodeFlow(clientId);
+    } else {
+        const accessToken = await getAccessToken(clientId, code);
+        const profile = await fetchProfile(accessToken);
+        console.log(profile);
+        //populateUI(profile);
+        let link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css';
+        document.head.appendChild(link);
+    }
 }
 
 
@@ -189,7 +191,7 @@ async function getRandomCountryRec() {
 // skip to next track
 async function skipToNext(accessToken: string) {
 
-    const response = await fetch("https://api.spotify.com/v1/me/player/next", {
+    await fetch("https://api.spotify.com/v1/me/player/next", {
         method: "POST",
         headers: { Authorization: `Bearer ${accessToken}` }
     });
@@ -246,7 +248,7 @@ async function pausePlaying(accessToken: string) {
         params.append("client_id", clientId);
         params.append("scope", "user-modify-playback-state");
 
-        const response = await fetch("https://api.spotify.com/v1/me/player/pause", {
+        await fetch("https://api.spotify.com/v1/me/player/pause", {
             method: "PUT",
             headers: { Authorization: `Bearer ${accessToken}` },
             body: params
@@ -265,7 +267,7 @@ async function playPlaying(accessToken: string) {
         params.append("client_id", clientId);
         params.append("scope", "user-modify-playback-state");
 
-        const response = await fetch("https://api.spotify.com/v1/me/player/play", {
+        await fetch("https://api.spotify.com/v1/me/player/play", {
             method: "PUT",
             headers: { Authorization: `Bearer ${accessToken}` }
         });
@@ -277,3 +279,5 @@ async function playPlaying(accessToken: string) {
 
 document.getElementById("togglePlay")!.onclick = () => togglePlaying();
 document.getElementById("randRec")!.onclick = () => getRandomCountryRec();
+
+doThings();
