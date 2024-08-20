@@ -73,7 +73,13 @@ export async function redirectToAuthCodeFlow(clientId: string) {
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
-    params.append("redirect_uri", "http://localhost:5173/callback");
+
+    // for use with vercel
+    params.append("redirect_uri", "https://cat-spotify-app.vercel.app/callback");
+
+    // for localhost
+    // params.append("redirect_uri", "http://localhost:5173/callback");
+
     params.append("scope", "user-read-private user-read-email user-modify-playback-state user-read-playback-state");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
