@@ -2,6 +2,10 @@ const clientId = "41fe19ab8adb41b587527634a55d09e0";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
+// Vercel vs Localhost
+// const redirect_uri = "http://localhost:5173/callback";
+const redirect_uri = "https://cat-spotify-app.vercel.app/callback?";
+
 async function doThings() {
     if (!code) {
         redirectToAuthCodeFlow(clientId);
@@ -25,7 +29,7 @@ export async function getAccessToken(clientId: string, code: string): Promise<st
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    params.append("redirect_uri", "http://localhost:5173/callback");
+    params.append("redirect_uri", redirect_uri);
     params.append("code_verifier", verifier!);
 
     const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -75,10 +79,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
     params.append("response_type", "code");
 
     // for use with vercel
-    params.append("redirect_uri", "https://cat-spotify-app.vercel.app/callback");
-
-    // for localhost
-    // params.append("redirect_uri", "http://localhost:5173/callback");
+    params.append("redirect_uri", redirect_uri);
 
     params.append("scope", "user-read-private user-read-email user-modify-playback-state user-read-playback-state");
     params.append("code_challenge_method", "S256");
